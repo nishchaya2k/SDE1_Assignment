@@ -1,0 +1,99 @@
+.card {
+  /* height: 30rem; */
+  width: 18rem;
+  margin-top: 40px;
+  margin-left: 40px;
+  background-color: white;
+  border-radius: 20px;
+  box-sizing: border-box;
+  padding: 8px 16px 8px 16px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 4px 0px;
+}
+.card_details {
+  height: 100%;
+  width: 100%;
+  letter-spacing: 1px;
+
+  /* border: 1px solid rgb(220, 216, 216); */
+}
+
+.card_details-post {
+  width: max-content;
+  margin-top: 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  padding: 4px 7px;
+  border: 1px solid rgb(220, 216, 216);
+}
+.card_details-companyName {
+  font-size: 13px;
+  margin-top: 15px;
+  font-weight: 600;
+  color: #8b8b8b;
+}
+.card_details-jobTitle {
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: 350;
+  opacity: 70;
+}
+.card_details-location {
+  margin-top: 5px;
+  font-size: 11px;
+  font-weight: 500;
+}
+.card_details-salaryRange {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgb(77, 89, 106);
+}
+.card_details_aboutCompany {
+  margin-top: 15px;
+}
+.card_details_aboutCompany-heading {
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: 550;
+}
+.card_details_aboutCompany-description {
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: 350;
+  line-height: 18px;
+}
+.card_details_experience {
+  margin-top: 15px;
+}
+.card_details_experience-heading {
+  margin-top: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #8b8b8b;
+}
+.card_details_experience-years {
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: 400;
+}
+.card_details-applyButton {
+  width: 100%;
+  border-radius: 5px;
+  margin-top: 15px;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px;
+  border: none;
+  background-color: rgb(85, 239, 196);
+}
+.card_details-referralButton {
+  width: 100%;
+  border-radius: 5px;
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px;
+  border: none;
+  color: white;
+  background-color: rgb(49, 39, 198);
+}

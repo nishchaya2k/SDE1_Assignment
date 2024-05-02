@@ -1,9 +1,12 @@
 import React from 'react'
+import JobCard from '../../components/jobCard/JobCard';
+import "./home.css"
 
 const Home = () => {
+
     return (
-        <div>
-            HEY
+        <div className='home'>
+            <JobCard />
         </div>
     )
 }
