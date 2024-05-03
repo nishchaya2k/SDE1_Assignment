@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Select from 'react-select';
+import "./FilterJob.css"
 
 
 const FilterJob = ({ Options }) => {
@@ -9,11 +10,12 @@ const FilterJob = ({ Options }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isRtl, setIsRtl] = useState(false);
     return (
-        <div className=''>
+        <div className='select'>
             <>
                 <Select
                     isMulti
-                    defaultValue={Options[0]}
+                    placeholder={Options[0].label}
+                    // defaultValue={Options[0]}
                     isDisabled={isDisabled}
                     isLoading={isLoading}
                     isClearable={isClearable}
