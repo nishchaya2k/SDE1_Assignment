@@ -5,7 +5,10 @@
   background-color: white;
 }
 
-.container {
+.container_filter {
+}
+
+.container_jobCard {
   display: flex;
   justify-content: center;
   gap: 2rem;
