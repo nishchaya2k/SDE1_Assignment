@@ -13,6 +13,8 @@ const Home = () => {
     const [offset, setOffset] = useState(0);
     const containerRef = useRef(null);
     const [throttleTimeout, setThrottleTimeout] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+
 
     const [filters, setFilters] = useState({
         roles: [],
@@ -81,12 +83,20 @@ const Home = () => {
     // Apply filters when filters or job data changes
     useEffect(() => {
         applyFilters(jobData);
-    }, [filters, jobData]);
+    }, [filters, searchTerm, jobData]);
 
 
     // Function to apply filters on job data
     const applyFilters = (data) => {
+
         let filteredData = data;
+
+        //Search (startsWith() used to check whether a string starts with a specific substring)
+        if (searchTerm) {
+            filteredData = filteredData.filter(job =>
+                job.companyName.toLowerCase().startsWith(searchTerm.toLowerCase())
+            );
+        }
 
         // Filter by roles
         if (filters.roles.length > 0) {
@@ -131,6 +141,10 @@ const Home = () => {
         }));
     };
 
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
 
     return (
         <div className='wrapper'>
@@ -145,6 +159,15 @@ const Home = () => {
                     <FilterJob Options={salary_Options} onChange={(selected) => handleFilterChange('salary', selected)} placeHolder={"Minimum Base Pay Salary"} />
 
                     <FilterJob Options={location_Options} onChange={(selected) => handleFilterChange('location', selected)} placeHolder={"Location"} />
+
+                    {/* Search input for company name */}
+                    <input
+                        type='text'
+                        placeholder='Search By Company Name'
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                        className='search-bar'
+                    />
 
                 </div>
                 <div className="container_jobCard" ref={containerRef}>
