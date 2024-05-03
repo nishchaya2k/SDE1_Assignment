@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import JobCard from '../../components/jobCard/JobCard';
 import "./home.css"
 
@@ -8,42 +8,64 @@ import { roles_Options, employee_Options, experience_Options, work_Options, sala
 import FilterJob from '../../components/filterJob/FilterJob';
 
 const Home = () => {
+
     const [jobData, setJobData] = useState([])
+    const [offset, setOffset] = useState(0);
+    const containerRef = useRef(null);
+    const [throttleTimeout, setThrottleTimeout] = useState(null);
 
-    // fetch("https://api.weekday.technology/adhoc/getSampleJdJSON", requestOptions)
-    //     .then((response) => response.json())
-    //     .then((result) => console.log(result))
-    //     .catch((error) => console.error(error));
+    const fetchData = async () => {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
 
+        const body = JSON.stringify({
+            "limit": 10,
+            offset
+        });
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body
+        };
+
+        try {
+            const response = await fetch("https://api.weekday.technology/adhoc/getSampleJdJSON", requestOptions)
+
+            const data = await response.json();
+            console.log(data.jdList)
+            setJobData((prev) => [...prev, ...data.jdList]);
+
+        }
+        catch (err) {
+            console.error(err);
+        }
+    }
+    // scrolltop + innerheight >= scrollheight
+
+    const handleInfiniteScroll = async () => {
+
+        try {
+            if (document.documentElement.scrollTop + window.innerHeight + 1 >= document.documentElement.scrollHeight) {
+                if (!throttleTimeout) {
+                    setOffset((prev) => prev + 10);
+                    setThrottleTimeout(setTimeout(() => setThrottleTimeout(null), 2000));
+                    // Reset the throttle timeout, avoid frequent function calling
+                }
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
     useEffect(() => {
-        const fetchData = async () => {
-            const myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
+        console.log(offset)
+        fetchData()
+    }, [offset])
 
-            const body = JSON.stringify({
-                "limit": 10,
-                "offset": 0
-            });
-
-            const requestOptions = {
-                method: "POST",
-                headers: myHeaders,
-                body
-            };
-
-            try {
-                const response = await fetch("https://api.weekday.technology/adhoc/getSampleJdJSON", requestOptions)
-
-                const data = await response.json();
-                console.log(data.jdList)
-                setJobData(data.jdList);
-            }
-            catch (err) {
-                console.error(err);
-            }
-        }
-        fetchData();
+    useEffect(() => {
+        window.addEventListener("scroll", handleInfiniteScroll) //will fire the event whenever user scroll
+        return (() => window.removeEventListener("scroll", handleInfiniteScroll))
     }, [])
 
     return (
@@ -57,11 +79,10 @@ const Home = () => {
                     <FilterJob Options={salary_Options} />
                     <FilterJob Options={location_Options} />
                 </div>
-                <div className="container_jobCard">
+                <div className="container_jobCard" ref={containerRef}>
                     {jobData?.map((jobData_items) => (
                         <JobCard key={jobData_items.jdUid} jobData_items={jobData_items} />
                     ))}
-
                 </div>
             </div>
         </div>
