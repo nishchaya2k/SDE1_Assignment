@@ -3,7 +3,7 @@ import JobCard from '../../components/jobCard/JobCard';
 import "./home.css"
 
 //All the filter data options
-import { roles_Options, employee_Options, experience_Options, work_Options, salary_Options, location_Options } from '../../utils/FilterData';
+import { roles_Options, experience_Options, work_Options, salary_Options, location_Options } from '../../utils/FilterData';
 
 import FilterJob from '../../components/filterJob/FilterJob';
 
@@ -13,6 +13,15 @@ const Home = () => {
     const [offset, setOffset] = useState(0);
     const containerRef = useRef(null);
     const [throttleTimeout, setThrottleTimeout] = useState(null);
+
+    const [filters, setFilters] = useState({
+        roles: [],
+        experience: [],
+        work: [],
+        salary: [],
+        location: []
+    });
+    const [filteredJobData, setFilteredJobData] = useState([]);
 
     const fetchData = async () => {
         const myHeaders = new Headers();
@@ -58,6 +67,7 @@ const Home = () => {
         }
     }
 
+    //for infinite scroll
     useEffect(() => {
         console.log(offset)
         fetchData()
@@ -68,19 +78,77 @@ const Home = () => {
         return (() => window.removeEventListener("scroll", handleInfiniteScroll))
     }, [])
 
+    // Apply filters when filters or job data changes
+    useEffect(() => {
+        applyFilters(jobData);
+    }, [filters, jobData]);
+
+
+    // Function to apply filters on job data
+    const applyFilters = (data) => {
+        let filteredData = data;
+
+        // Filter by roles
+        if (filters.roles.length > 0) {
+            filteredData = filteredData.filter(job => filters.roles.includes(job.jobRole));
+        }
+
+        // Filter by experience
+        if (filters.experience.length > 0) {
+
+            filteredData = filteredData.filter(job => {
+                const selectedExperience = Math.max(...filters.experience);
+                return job.minExp >= selectedExperience
+            });
+        }
+
+        // Filter by work arrangement
+        if (filters.work.length > 0) {
+            filteredData = filteredData.filter(job => filters.work.includes(job.location));
+        }
+
+        // Filter by salary
+        if (filters.salary.length > 0) {
+            filteredData = filteredData.filter(job => {
+                const selectedSalary = Math.max(...filters.salary);
+                return job.minJdSalary >= selectedSalary;
+            });
+        }
+
+        // Filter by location
+        if (filters.location.length > 0) {
+            filteredData = filteredData.filter(job => filters.location.includes(job.location));
+        }
+
+        setFilteredJobData(filteredData);
+    };
+
+    // Handle filter changes
+    const handleFilterChange = (filterType, selectedValues) => {
+        setFilters(prev => ({
+            ...prev,
+            [filterType]: selectedValues.map(option => option.value)
+        }));
+    };
+
+
     return (
         <div className='wrapper'>
             <div className="container">
                 <div className="container_filter">
-                    <FilterJob Options={roles_Options} />
-                    <FilterJob Options={employee_Options} />
-                    <FilterJob Options={experience_Options} />
-                    <FilterJob Options={work_Options} />
-                    <FilterJob Options={salary_Options} />
-                    <FilterJob Options={location_Options} />
+                    <FilterJob Options={roles_Options} onChange={(selected) => handleFilterChange('roles', selected)} placeHolder={"Roles"} />
+
+                    <FilterJob Options={experience_Options} onChange={(selected) => handleFilterChange('experience', selected)} placeHolder={"Experience"} />
+
+                    <FilterJob Options={work_Options} onChange={(selected) => handleFilterChange('work', selected)} placeHolder={"Remote/on-site"} />
+
+                    <FilterJob Options={salary_Options} onChange={(selected) => handleFilterChange('salary', selected)} placeHolder={"Minimum Base Pay Salary"} />
+
+                    <FilterJob Options={location_Options} onChange={(selected) => handleFilterChange('location', selected)} placeHolder={"Location"} />
+
                 </div>
                 <div className="container_jobCard" ref={containerRef}>
-                    {jobData?.map((jobData_items) => (
+                    {filteredJobData.map(jobData_items => (
                         <JobCard key={jobData_items.jdUid} jobData_items={jobData_items} />
                     ))}
                 </div>

@@ -3,26 +3,30 @@ import Select from 'react-select';
 import "./FilterJob.css"
 
 
-const FilterJob = ({ Options }) => {
-    const [isClearable, setIsClearable] = useState(true);
-    const [isSearchable, setIsSearchable] = useState(true);
-    const [isDisabled, setIsDisabled] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isRtl, setIsRtl] = useState(false);
+const FilterJob = ({ Options, onChange, placeHolder }) => {
+    const [selectedOptions, setSelectedOptions] = useState([]);
+
+    const handleChange = (selectedOptions) => {
+        setSelectedOptions(selectedOptions);
+        // Call the onChange function passed as a prop to update the parent state
+        onChange(selectedOptions);
+    }
     return (
         <div className='select'>
             <>
                 <Select
                     isMulti
-                    placeholder={Options[0].label}
+                    placeholder={placeHolder}
                     // defaultValue={Options[0]}
-                    isDisabled={isDisabled}
-                    isLoading={isLoading}
-                    isClearable={isClearable}
-                    isRtl={isRtl}
-                    isSearchable={isSearchable}
+                    isDisabled={false}
+                    isLoading={false}
+                    isClearable={true}
+                    isRtl={false}
+                    isSearchable={true}
                     name="color"
+                    value={selectedOptions} // Binds selected options to state
                     options={Options}
+                    onChange={handleChange}
                 />
             </>
         </div>
