@@ -1,5 +1,13 @@
-.home {
+.wrapper {
   width: 100dvw;
-  height: 100dvh;
+  padding: 1rem;
+  /* border: 1px solid black; */
   background-color: white;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
 }

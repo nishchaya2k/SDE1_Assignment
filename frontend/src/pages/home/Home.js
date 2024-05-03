@@ -5,8 +5,22 @@ import "./home.css"
 const Home = () => {
 
     return (
-        <div className='home'>
-            <JobCard />
+        <div className='wrapper'>
+            <div className="container">
+                <JobCard />
+                <JobCard />
+                <JobCard />
+                <JobCard />
+                <JobCard />
+                <JobCard />
+                <JobCard />
+                <JobCard />
+                <JobCard />
+                <JobCard />
+                <JobCard />
+                <JobCard />
+            </div>
+
         </div>
     )
 }
