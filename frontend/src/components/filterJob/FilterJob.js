@@ -1,13 +1,8 @@
 import React, { useState } from 'react'
 import Select from 'react-select';
 
-const filterOptions = [
-    { value: "remote", label: "Remote" },
-    { value: "hybrid", label: "Hybrid" },
-    { value: "in-Office ", label: "In-Office" }
-]
 
-const FilterJob = () => {
+const FilterJob = ({ Options }) => {
     const [isClearable, setIsClearable] = useState(true);
     const [isSearchable, setIsSearchable] = useState(true);
     const [isDisabled, setIsDisabled] = useState(false);
@@ -17,14 +12,15 @@ const FilterJob = () => {
         <div className=''>
             <>
                 <Select
-                    defaultValue={filterOptions[0]}
+                    isMulti
+                    defaultValue={Options[0]}
                     isDisabled={isDisabled}
                     isLoading={isLoading}
                     isClearable={isClearable}
                     isRtl={isRtl}
                     isSearchable={isSearchable}
                     name="color"
-                    options={filterOptions}
+                    options={Options}
                 />
             </>
         </div>
