@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react'
 import JobCard from '../../components/jobCard/JobCard';
 import "./home.css"
+import { fetchData } from "../../utils/functions/fetchData"
 
 //All the filter data options
-import { roles_Options, experience_Options, work_Options, salary_Options, location_Options } from '../../utils/FilterData';
+import { roles_Options, experience_Options, work_Options, salary_Options, location_Options } from '../../utils/data/FilterData';
 
 import FilterJob from '../../components/filterJob/FilterJob';
 
@@ -25,35 +26,8 @@ const Home = () => {
     });
     const [filteredJobData, setFilteredJobData] = useState([]);
 
-    const fetchData = async () => {
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
 
-        const body = JSON.stringify({
-            "limit": 10,
-            offset
-        });
-
-        const requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body
-        };
-
-        try {
-            const response = await fetch("https://api.weekday.technology/adhoc/getSampleJdJSON", requestOptions)
-
-            const data = await response.json();
-            console.log(data.jdList)
-            setJobData((prev) => [...prev, ...data.jdList]);
-
-        }
-        catch (err) {
-            console.error(err);
-        }
-    }
     // scrolltop + innerheight >= scrollheight
-
     const handleInfiniteScroll = async () => {
 
         try {
@@ -71,8 +45,9 @@ const Home = () => {
 
     //for infinite scroll
     useEffect(() => {
-        console.log(offset)
-        fetchData()
+        fetchData(offset).then(newData => {
+            setJobData((prevData) => [...prevData, ...newData])
+        })
     }, [offset])
 
     useEffect(() => {
