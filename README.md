@@ -4,8 +4,9 @@ Candidate Application Platform
 
 
 1. Clone the Repository:
-git clone [repository URL]
-cd [repository name]
+- git clone [repository URL]
+- cd SDE1_Assignment
+- cd frontend
 
 
 2. Install Dependencies:
