@@ -1,0 +1,46 @@
+.wrapper {
+  width: 100dvw;
+  min-height: 100vh;
+  background-color: white;
+}
+.container {
+  padding: 1rem;
+}
+
+.container_filter {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 1rem;
+}
+
+.container_Cards {
+  min-height: 100vh;
+}
+
+.container_Cards-jobCard {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+@media (max-width: 1024px) {
+  .container_Cards-jobCard {
+    gap: 14px;
+  }
+}
+
+.search-bar {
+  min-width: 190px;
+  height: 37px;
+  border-color: hsl(0, 0%, 80%);
+  border-style: solid;
+  border-width: 1px;
+  padding: 8px;
+  border-radius: 4px;
+  color: hsl(0, 0%, 20%);
+  font-size: 14px;
+  outline: #2684ff;
+}
