@@ -7,8 +7,8 @@ const JobCard = ({ jobData_items }) => {
             <div className="card_details">
                 <div className='card_details-post'>Posted 6 days ago</div>
                 <div className="card_details-companyName">{jobData_items.companyName}</div>
-                <div className='card_details-jobTitle'>{jobData_items.jobRole.toUpperCase()}</div>
-                <div className='card_details-location'>{jobData_items.location.charAt(0).toUpperCase() + jobData_items.location.slice(1)}</div>
+                <div className='card_details-jobTitle'>{jobData_items.jobRole?.toUpperCase()}</div>
+                <div className='card_details-location'>{jobData_items.location?.charAt(0).toUpperCase() + jobData_items.location?.slice(1)}</div>
                 <div className="card_details-salaryRange">
                     Estimated Salary:{' '}
                     {jobData_items.minJdSalary !== null && jobData_items.maxJdSalary !== null ? (

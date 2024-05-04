@@ -17,8 +17,6 @@ export const fetchData = async (offset) => {
         const response = await fetch("https://api.weekday.technology/adhoc/getSampleJdJSON", requestOptions)
 
         const data = await response.json();
-        console.log(offset)
-        console.log(data.jdList)
         return data.jdList
     }
     catch (err) {

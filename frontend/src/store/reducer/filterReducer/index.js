@@ -14,6 +14,7 @@ const filterReducer = createSlice({
     reducers: {
         rolesAdded: (state, action) => {
             state.roles = action.payload;
+            console.log(state.roles)
         },
         experienceAdded: (state, action) => {
             state.experience = action.payload;
