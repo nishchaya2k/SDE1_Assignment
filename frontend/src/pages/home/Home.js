@@ -1,20 +1,51 @@
 import React, { useEffect, useState, useRef } from 'react'
+import { useDispatch, useSelector } from "react-redux"
 import JobCard from '../../components/jobCard/JobCard';
 import "./home.css"
 import { fetchData } from "../../utils/functions/fetchData"
 import { applyFilters } from "../../utils/functions/applyFilters"
 import FilterJob from '../../components/filterJob/FilterJob';
+import {
+    filteredDataAdded,
+    offsetAdded,
+    selectFilteredData,
+    selectOffset
+} from '../../store/reducer/jobDataReducer';
+
+import {
+    selectRoles,
+    selectExperience,
+    selectWork,
+    selectSalary,
+    selectLocation
+} from '../../store/reducer/filterReducer';
+
+
 
 //All the filter data options
 import { roles_Options, experience_Options, work_Options, salary_Options, location_Options } from '../../utils/data/FilterData';
 
-const Home = () => {
+import useHandleFilterChange from '../../utils/functions/handleFilterChange';
 
-    const [jobData, setJobData] = useState([])
-    const [offset, setOffset] = useState(0);
+
+const Home = () => {
+    const dispatch = useDispatch();
+    const filteredData = useSelector(selectFilteredData)
+    // const jobData = useSelector(selectJobData)
+    const offset = useSelector(selectOffset)
+
+    const roles = useSelector(selectRoles);
+    const experience = useSelector(selectExperience);
+    const work = useSelector(selectWork);
+    const salary = useSelector(selectSalary);
+    const location = useSelector(selectLocation);
+
     const containerRef = useRef(null);
     const [throttleTimeout, setThrottleTimeout] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
+    const [jobData, setJobData] = useState([])
+    const handleFilterChange = useHandleFilterChange();
+
 
 
     const [filters, setFilters] = useState({
@@ -24,52 +55,45 @@ const Home = () => {
         salary: [],
         location: []
     });
-    const [filteredJobData, setFilteredJobData] = useState([]);
-
 
     // scrolltop + innerheight >= scrollheight
     const handleInfiniteScroll = async () => {
 
         try {
             if (document.documentElement.scrollTop + window.innerHeight + 1 >= document.documentElement.scrollHeight) {
+
                 if (!throttleTimeout) {
-                    setOffset((prev) => prev + 10);
-                    setThrottleTimeout(setTimeout(() => setThrottleTimeout(null), 2000));
+                    const newOffset = offset + 10;
+                    dispatch(offsetAdded(newOffset))
+                    setThrottleTimeout(setTimeout(() => setThrottleTimeout(null), 200));
                     // Reset the throttle timeout, avoid frequent function calling
+
                 }
+
             }
         } catch (error) {
             console.error(error)
         }
     }
 
-    //for infinite scroll
+    //for fetching data by infinite scroll
     useEffect(() => {
         fetchData(offset).then(newData => {
-            setJobData((prevData) => [...prevData, ...newData])
+            setJobData((prev) => ([...prev, ...newData]))
         })
     }, [offset])
 
+    //for scroll event
     useEffect(() => {
         window.addEventListener("scroll", handleInfiniteScroll) //will fire the event whenever user scroll
         return (() => window.removeEventListener("scroll", handleInfiniteScroll))
-    }, [])
+    }, [offset])
 
     // Apply filters when filters or job data changes
     useEffect(() => {
-        const filteredData = applyFilters(jobData, filters, searchTerm);
-        setFilteredJobData(filteredData);
-
-    }, [filters, searchTerm, jobData]);
-
-
-    // Handle filter changes
-    const handleFilterChange = (filterType, selectedValues) => {
-        setFilters(prev => ({
-            ...prev,
-            [filterType]: selectedValues.map(option => option.value)
-        }));
-    };
+        const data = applyFilters(jobData, roles, experience, work, salary, location, searchTerm);
+        dispatch(filteredDataAdded(data));
+    }, [jobData, roles, experience, work, salary, location, searchTerm, dispatch]);
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
@@ -101,8 +125,8 @@ const Home = () => {
 
                 </div>
                 <div className="container_jobCard" ref={containerRef}>
-                    {filteredJobData.map(jobData_items => (
-                        <JobCard key={jobData_items.jdUid} jobData_items={jobData_items} />
+                    {filteredData?.map((jobData_items, index) => (
+                        <JobCard key={`${jobData_items.jdUid}-${index}`} jobData_items={jobData_items} />
                     ))}
                 </div>
             </div>

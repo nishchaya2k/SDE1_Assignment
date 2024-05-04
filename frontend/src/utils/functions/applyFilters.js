@@ -1,5 +1,5 @@
 // Function to apply filters on job data
-export const applyFilters = (data, filters, searchTerm) => {
+export const applyFilters = (data, roles, experience, work, salary, location, searchTerm) => {
 
     let filteredData = data;
 
@@ -11,35 +11,35 @@ export const applyFilters = (data, filters, searchTerm) => {
     }
 
     // Filter by roles
-    if (filters.roles.length > 0) {
-        filteredData = filteredData.filter(job => filters.roles.includes(job.jobRole));
+    if (roles.length > 0) {
+        filteredData = filteredData.filter(job => roles.includes(job.jobRole));
     }
 
     // Filter by experience
-    if (filters.experience.length > 0) {
+    if (experience.length > 0) {
 
         filteredData = filteredData.filter(job => {
-            const selectedExperience = Math.max(...filters.experience);
+            const selectedExperience = Math.max(...experience);
             return job.minExp >= selectedExperience
         });
     }
 
     // Filter by work arrangement
-    if (filters.work.length > 0) {
-        filteredData = filteredData.filter(job => filters.work.includes(job.location));
+    if (work.length > 0) {
+        filteredData = filteredData.filter(job => work.includes(job.location));
     }
 
     // Filter by salary
-    if (filters.salary.length > 0) {
+    if (salary.length > 0) {
         filteredData = filteredData.filter(job => {
-            const selectedSalary = Math.max(...filters.salary);
+            const selectedSalary = Math.max(...salary);
             return job.minJdSalary >= selectedSalary;
         });
     }
 
     // Filter by location
-    if (filters.location.length > 0) {
-        filteredData = filteredData.filter(job => filters.location.includes(job.location));
+    if (location.length > 0) {
+        filteredData = filteredData.filter(job => location.includes(job.location));
     }
 
     return filteredData;
