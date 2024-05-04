@@ -1,10 +1,10 @@
 .wrapper {
   width: 100dvw;
+  min-height: 100vh;
   background-color: white;
 }
 .container {
   padding: 1rem;
-  /* border: 1px solid black; */
 }
 
 .container_filter {
@@ -13,15 +13,23 @@
   flex-wrap: wrap;
   gap: 8px;
   padding: 1rem;
-  /* border: 1px solid black; */
 }
 
-.container_jobCard {
+.container_Cards {
+  min-height: 100vh;
+}
+
+.container_Cards-jobCard {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 2rem;
-  /* border: 1px solid black; */
+}
+
+@media (max-width: 1024px) {
+  .container_Cards-jobCard {
+    gap: 14px;
+  }
 }
 
 .search-bar {

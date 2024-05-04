@@ -1,7 +1,14 @@
-import React from 'react'
+import React, { useRef } from 'react';
 import "./JobCard.css"
 
 const JobCard = ({ jobData_items }) => {
+    const descriptionRef = useRef();
+
+    // Define a function to handle the click event
+    const toggleDescription = () => {
+        // Use the ref to access the element and toggle the expand class
+        descriptionRef.current.classList.toggle('expand');
+    };
     return (
         <div className='card'>
             <div className="card_details">
@@ -21,7 +28,8 @@ const JobCard = ({ jobData_items }) => {
                 </div>
                 <div className='card_details_aboutCompany'>
                     <p className='card_details_aboutCompany-heading'>About Company</p>
-                    <div className="card_details_aboutCompany-description">
+                    <div className="card_details_aboutCompany-description" ref={descriptionRef}
+                        onClick={toggleDescription}>
                         {jobData_items.jobDetailsFromCompany}
                     </div>
                 </div>

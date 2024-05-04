@@ -118,10 +118,12 @@ const Home = () => {
                     />
 
                 </div>
-                <div className="container_jobCard" ref={containerRef}>
-                    {filteredData?.map((jobData_items, index) => (
-                        <JobCard key={`${jobData_items.jdUid}-${index}`} jobData_items={jobData_items} />
-                    ))}
+                <div className='container_Cards' ref={containerRef}>
+                    <div className="container_Cards-jobCard" ref={containerRef}>
+                        {filteredData?.map((jobData_items, index) => (
+                            <JobCard key={`${jobData_items.jdUid}-${index}`} jobData_items={jobData_items} />
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>
